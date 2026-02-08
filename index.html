@@ -128,6 +128,22 @@ body::after{content:'';position:fixed;bottom:-80px;left:-40px;width:300px;height
 .order-card .steps{font-size:15px;font-weight:600;line-height:2}
 .order-card .warning{margin-top:6px;opacity:0.9;font-size:13px;font-weight:600}
 
+/* Dairy-free toggle */
+.df-toggle{display:flex;align-items:center;justify-content:space-between;background:white;border-radius:20px;padding:14px 20px;margin-bottom:16px;box-shadow:var(--shadow)}
+.df-toggle-left{display:flex;align-items:center;gap:10px}
+.df-toggle-left .icon{font-size:24px}
+.df-toggle-left .label{font-weight:700;font-size:15px;color:var(--text)}
+.df-toggle-left .sub{font-size:12px;color:var(--text-light);font-weight:500}
+.switch{position:relative;width:52px;height:30px;flex-shrink:0}
+.switch input{opacity:0;width:0;height:0}
+.switch .slider{position:absolute;inset:0;background:#D4D4D4;border-radius:30px;cursor:pointer;transition:all .25s}
+.switch .slider::before{content:'';position:absolute;left:3px;top:3px;width:24px;height:24px;background:white;border-radius:50%;transition:all .25s;box-shadow:0 1px 4px rgba(0,0,0,0.15)}
+.switch input:checked+.slider{background:var(--green)}
+.switch input:checked+.slider::before{transform:translateX(22px)}
+
+.df-badge{display:inline-block;background:var(--green);color:white;font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;margin-left:6px;vertical-align:middle;letter-spacing:0.5px}
+.df-swap{color:var(--green);font-size:12px;font-weight:600;font-style:italic}
+
 .view-enter{animation:fadeSlideIn .25s ease-out}
 @keyframes fadeSlideIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 </style>
@@ -172,7 +188,28 @@ const R=[
 
 const CATS=[{n:"Breads",icon:"\u{1F35E}",c:"breads"},{n:"Special",icon:"\u2728",c:"special"},{n:"Dough",icon:"\u{1FAD3}",c:"dough"},{n:"Sweet & More",icon:"\u{1F370}",c:"sweet"},{n:"Explore",icon:"\u{1F50D}",c:"explore"}];
 
-let S={v:"home",r:null,sz:null,cl:null,cat:null};
+let S={v:"home",r:null,sz:null,cl:null,cat:null,df:false};
+
+// Persist dairy-free preference
+try{S.df=localStorage.getItem("fb_df")==="1"}catch(e){}
+function toggleDF(){S.df=!S.df;try{localStorage.setItem("fb_df",S.df?"1":"0")}catch(e){};render()}
+
+// Dairy-free ingredient swaps
+const DF_SWAPS={
+  "Milk":"Almond or coconut milk",
+  "Milk (warm)":"Almond or coconut milk (warm)",
+  "Long life milk":"Long life coconut milk",
+  "Milk powder":"Coconut milk powder",
+  "Melted butter":"Dairy-free spread, melted",
+  "Soft butter/margarine":"Dairy-free spread",
+  "Buttermilk":"Coconut milk + 1 tsp lemon juice",
+  "Mature cheddar, cubed small (dispenser)":"Dairy-free cheddar, cubed (dispenser)",
+  "Grated Parmesan (in dispenser)":"Dairy-free Parmesan, grated (dispenser)",
+  "Natural yoghurt":"Dairy-free coconut yoghurt",
+};
+function dfName(n){return S.df&&DF_SWAPS[n]?DF_SWAPS[n]:n}
+function isDairySwap(n){return S.df&&DF_SWAPS[n]}
+
 function ss(u){Object.assign(S,u);render()}
 function render(){document.getElementById("app").innerHTML=S.v==="home"?renderHome():renderRecipe()}
 
@@ -190,6 +227,7 @@ function renderHome(){
   const cards=arr=>arr.map(r=>`<button class="recipe-card" data-cat="${getCat(r)}" onclick="selR('${r.id}')"><div class="recipe-icon-box">${r.icon}</div><div style="flex:1;min-width:0"><div class="recipe-card-title">${r.name}</div><div class="recipe-card-desc">${r.desc}</div></div><div class="recipe-card-badge">#${r.fn}</div></button>`).join('');
 
   return`<header class="header"><div class="header-icon">\u{1F35E}</div><h1>Fresh Bake</h1><p class="subtitle">Our Family Breadmaker Guide</p></header><div class="rainbow"></div>
+  <div class="df-toggle"><div class="df-toggle-left"><span class="icon">\u{1F95B}</span><div><div class="label">Dairy-Free Mode${S.df?' <span class="df-badge">ON</span>':''}</div><div class="sub">${S.df?'Swapping milk, butter & cheese for dairy-free':'Tap to swap dairy ingredients automatically'}</div></div></div><label class="switch"><input type="checkbox" ${S.df?'checked':''} onchange="toggleDF()"><span class="slider"></span></label></div>
   <div class="tabs"><button class="tab ${!S.cat?'active':''}" data-c="all" onclick="ss({cat:null})">All</button>${CATS.map(c=>`<button class="tab ${S.cat===c.c?'active':''}" data-c="${c.c}" onclick="ss({cat:S.cat==='${c.c}'?null:'${c.c}'})">${c.icon} ${c.n}</button>`).join('')}</div>
   <div class="recipe-list view-enter">
   ${showSections?`<div class="section-header">\u{1F4D6} Machine Recipes</div>${cards(builtIn)}<div class="section-header">\u{1F50D} Explore \u2014 Inspired by BBC Good Food</div>${cards(explore)}`:cards(f)}
@@ -211,11 +249,12 @@ function renderRecipe(){
   const heroBg=cc==='orange'?'#FFF3E0,#FFE0B2':cc==='purple'?'#F3E5F5,#CE93D8':cc==='green'?'#E0F2F1,#80CBC4':cc==='blue'?'#E1F5FE,#81D4FA':'#FCE4EC,#F48FB1';
 
   return`<header class="header compact"><button class="back-btn" onclick="goHome()">\u2190</button></header><div class="view-enter">
+  <div class="df-toggle" style="margin-top:8px"><div class="df-toggle-left"><span class="icon">\u{1F95B}</span><div><div class="label">Dairy-Free${S.df?' <span class="df-badge">ON</span>':''}</div><div class="sub">${S.df?'Showing dairy-free swaps':'Tap to swap dairy'}</div></div></div><label class="switch"><input type="checkbox" ${S.df?'checked':''} onchange="toggleDF()"><span class="slider"></span></label></div>
   <div class="recipe-hero"><div class="recipe-hero-icon" style="background:linear-gradient(135deg,${heroBg})">${r.icon}</div><h2>${r.name}</h2><p>${r.desc}</p>${r.inspired?'<div class="inspired-tag">\u{1F50D} Inspired by BBC Good Food</div>':''}</div>
   <div class="settings-card ${cc}"><div class="settings-label">\u2699\uFE0F Machine Settings</div><div class="settings-grid"><div class="settings-item"><div class="label">Programme</div><div class="value">${fnL}</div></div>${S.cl?`<div class="settings-item"><div class="label">Colour</div><div class="value">${S.cl}</div></div>`:''}${S.sz?`<div class="settings-item"><div class="label">Size</div><div class="value">${S.sz}</div></div>`:''}</div><div class="settings-steps">${st}</div></div>
   ${r.ls.length?`<div class="selector"><div class="selector-label">Loaf Size</div><div class="selector-row">${r.ls.map(s=>`<button class="selector-btn ${S.sz===s?'active':''}" onclick="ss({sz:'${s}'})">${s}</button>`).join('')}</div></div>`:''}
   ${r.colours.length?`<div class="selector" style="margin-bottom:18px"><div class="selector-label">Crust Colour</div><div class="selector-row">${r.colours.map(c=>`<button class="selector-btn ${S.cl===c?'active':''}" onclick="ss({cl:'${c}'})">${ci(c)} ${c}</button>`).join('')}</div></div>`:''}
-  ${ing.length?`<div class="ingredients-card"><h3>\u{1F9FA} What You Need</h3>${ing.map(([n,a])=>`<div class="ingredient-row"><span class="ingredient-name">${n}</span><span class="ingredient-amount">${a}</span></div>`).join('')}</div>`:`<div class="empty-card"><div class="big-icon">${r.icon}</div><p>Use your own recipe or prepared dough!</p></div>`}
+  ${ing.length?`<div class="ingredients-card"><h3>\u{1F9FA} What You Need${S.df?' <span class="df-badge">DAIRY-FREE</span>':''}</h3>${ing.map(([n,a])=>`<div class="ingredient-row"><span class="ingredient-name">${dfName(n)}</span><span class="ingredient-amount">${a}</span></div>`).join('')}</div>`:`<div class="empty-card"><div class="big-icon">${r.icon}</div><p>Use your own recipe or prepared dough!</p></div>`}
   ${r.tips?`<div class="tips-card"><h3>\u{1F4A1} Top Tip</h3><p>${r.tips}</p></div>`:''}
   ${ing.length&&!r.no?`<div class="order-card"><h3>\u{1F4CB} Adding Order</h3><div class="steps">1\uFE0F\u20E3 Liquid first (water/milk)<br>2\uFE0F\u20E3 Oil, eggs, salt, sugar<br>3\uFE0F\u20E3 Milk powder & flour<br>4\uFE0F\u20E3 Yeast LAST \u2014 on top of dry flour</div><div class="warning">\u26A0\uFE0F Keep yeast away from salt & liquid!</div></div>`:''}</div>`;
 }
