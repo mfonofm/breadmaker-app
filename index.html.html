@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#FFF5E6">
+<title>Fresh Bake 🍞 — Family Breadmaker Guide</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍞</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --pink:#FF6B9D;--orange:#FF8C42;--yellow:#FFD166;--green:#06D6A0;--blue:#118AB2;
+  --purple:#9B5DE5;--red:#EF476F;--teal:#26C6DA;
+  --bg:#FFF5E6;--text:#2D1B00;--text-mid:#5C3A1E;--text-light:#8B7355;
+  --shadow:0 4px 16px rgba(100,50,0,0.08);
+}
+body{font-family:'Baloo 2','Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100dvh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body::before{content:'';position:fixed;top:-60px;right:-40px;width:250px;height:250px;border-radius:50%;background:radial-gradient(circle,rgba(255,107,157,0.12) 0%,transparent 70%);pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;bottom:-80px;left:-40px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(6,214,160,0.1) 0%,transparent 70%);pointer-events:none;z-index:0}
+.app{position:relative;z-index:1;max-width:520px;margin:0 auto;padding:0 16px 40px}
+
+.header{text-align:center;padding-top:32px;padding-bottom:4px}
+.header.compact{padding-top:16px}
+.header-icon{font-size:52px;line-height:1;margin-bottom:4px;animation:bounce 2s ease-in-out infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.header h1{font-family:'Fredoka',sans-serif;font-size:32px;font-weight:700;background:linear-gradient(135deg,var(--orange),var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-0.5px;margin-bottom:2px}
+.header .subtitle{font-size:13px;color:var(--text-light);font-weight:600;letter-spacing:1px}
+
+.back-btn{position:absolute;left:16px;top:18px;background:var(--yellow);border:none;border-radius:50%;width:46px;height:46px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--text);transition:all .2s;box-shadow:0 3px 10px rgba(255,209,102,0.4)}
+.back-btn:hover{transform:scale(1.1)}
+
+.rainbow{height:4px;border-radius:2px;background:linear-gradient(90deg,var(--pink),var(--orange),var(--yellow),var(--green),var(--blue),var(--purple));margin:16px 0;opacity:0.7}
+
+.tabs{display:flex;gap:8px;margin:16px 0;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;padding:10px 18px;border-radius:100px;border:2.5px solid transparent;background:white;color:var(--text-mid);font-family:'Baloo 2',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+.tab:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,0.08)}
+.tab[data-c="all"].active{background:var(--orange);color:white;border-color:var(--orange)}
+.tab[data-c="breads"].active{background:var(--yellow);color:var(--text);border-color:var(--yellow)}
+.tab[data-c="special"].active{background:var(--purple);color:white;border-color:var(--purple)}
+.tab[data-c="dough"].active{background:var(--green);color:white;border-color:var(--green)}
+.tab[data-c="sweet"].active{background:var(--pink);color:white;border-color:var(--pink)}
+.tab[data-c="explore"].active{background:var(--blue);color:white;border-color:var(--blue)}
+
+/* Recipe cards */
+.recipe-list{display:flex;flex-direction:column;gap:10px}
+
+.section-header{font-family:'Fredoka',sans-serif;font-size:18px;font-weight:600;color:var(--text-mid);margin:20px 0 10px;padding-left:4px;display:flex;align-items:center;gap:8px}
+
+.recipe-card{display:flex;align-items:center;gap:14px;padding:16px 18px;background:white;border:none;border-radius:20px;cursor:pointer;text-align:left;transition:transform .15s,box-shadow .15s;box-shadow:var(--shadow);width:100%;font-family:'Baloo 2',sans-serif;border-left:5px solid transparent}
+.recipe-card:hover{transform:translateY(-2px) scale(1.01);box-shadow:0 8px 24px rgba(100,50,0,0.1)}
+.recipe-card:active{transform:translateY(0)}
+.recipe-card[data-cat="breads"]{border-left-color:var(--yellow)}
+.recipe-card[data-cat="special"]{border-left-color:var(--purple)}
+.recipe-card[data-cat="dough"]{border-left-color:var(--green)}
+.recipe-card[data-cat="sweet"]{border-left-color:var(--pink)}
+.recipe-card[data-cat="explore"]{border-left-color:var(--blue)}
+
+.recipe-icon-box{width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0}
+.recipe-card[data-cat="breads"] .recipe-icon-box{background:linear-gradient(135deg,#FFF8E1,#FFE082)}
+.recipe-card[data-cat="special"] .recipe-icon-box{background:linear-gradient(135deg,#F3E5F5,#CE93D8)}
+.recipe-card[data-cat="dough"] .recipe-icon-box{background:linear-gradient(135deg,#E0F2F1,#80CBC4)}
+.recipe-card[data-cat="sweet"] .recipe-icon-box{background:linear-gradient(135deg,#FCE4EC,#F48FB1)}
+.recipe-card[data-cat="explore"] .recipe-icon-box{background:linear-gradient(135deg,#E1F5FE,#81D4FA)}
+
+.recipe-card-title{font-weight:700;font-size:16px;color:var(--text);margin-bottom:1px}
+.recipe-card-desc{font-size:12.5px;color:var(--text-light);font-weight:500;line-height:1.3}
+.recipe-card-badge{border-radius:10px;padding:5px 10px;font-size:11px;font-weight:700;white-space:nowrap;flex-shrink:0}
+.recipe-card[data-cat="breads"] .recipe-card-badge{background:#FFF8E1;color:#F57F17}
+.recipe-card[data-cat="special"] .recipe-card-badge{background:#F3E5F5;color:#7B1FA2}
+.recipe-card[data-cat="dough"] .recipe-card-badge{background:#E0F2F1;color:#00695C}
+.recipe-card[data-cat="sweet"] .recipe-card-badge{background:#FCE4EC;color:#C2185B}
+.recipe-card[data-cat="explore"] .recipe-card-badge{background:#E1F5FE;color:#0277BD}
+
+.reminders{margin-top:24px;padding:20px 24px;background:linear-gradient(135deg,var(--orange),var(--pink));border-radius:24px;color:white;box-shadow:0 6px 20px rgba(255,107,157,0.2)}
+.reminders h3{font-family:'Fredoka',sans-serif;font-size:18px;margin-bottom:8px}
+.reminders p{font-size:13px;line-height:1.7;opacity:0.95;font-weight:500}
+.reminders strong{font-weight:700}
+
+/* Detail view */
+.recipe-hero{text-align:center;padding-top:12px;margin-bottom:20px}
+.recipe-hero-icon{width:88px;height:88px;border-radius:28px;display:inline-flex;align-items:center;justify-content:center;font-size:48px;margin-bottom:12px;box-shadow:0 6px 20px rgba(0,0,0,0.08)}
+.recipe-hero h2{font-family:'Fredoka',sans-serif;font-size:26px;font-weight:700;color:var(--text);margin-bottom:4px}
+.recipe-hero p{font-size:14px;color:var(--text-light);font-weight:500}
+
+.inspired-tag{display:inline-block;background:linear-gradient(135deg,var(--blue),var(--teal));color:white;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;margin-top:6px;letter-spacing:0.5px}
+
+.settings-card{border-radius:24px;padding:20px 24px;margin-bottom:14px;color:white;box-shadow:0 6px 20px rgba(0,0,0,0.12)}
+.settings-card.orange{background:linear-gradient(135deg,var(--orange),#FFa94d)}
+.settings-card.purple{background:linear-gradient(135deg,var(--purple),#B47AEA)}
+.settings-card.green{background:linear-gradient(135deg,var(--green),#2EE6B0)}
+.settings-card.pink{background:linear-gradient(135deg,var(--pink),#FF85B0)}
+.settings-card.blue{background:linear-gradient(135deg,var(--blue),var(--teal))}
+.settings-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;opacity:0.85;margin-bottom:10px}
+.settings-grid{display:flex;gap:10px;flex-wrap:wrap}
+.settings-item{background:rgba(255,255,255,0.2);border-radius:14px;padding:10px 16px;flex:1 1 auto;min-width:70px}
+.settings-item .label{font-size:11px;font-weight:600;opacity:0.85}
+.settings-item .value{font-size:18px;font-weight:700;line-height:1.3}
+.settings-steps{margin-top:12px;font-size:13px;font-weight:600;background:rgba(255,255,255,0.18);border-radius:12px;padding:10px 14px;line-height:1.5}
+.settings-steps strong{font-weight:700}
+
+.selector{margin-bottom:10px}
+.selector-label{font-size:12px;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.selector-row{display:flex;gap:8px}
+.selector-btn{flex:1;padding:12px 8px;border-radius:16px;border:2.5px solid #E8D9C0;background:white;color:var(--text-mid);font-family:'Baloo 2',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .15s;text-align:center}
+.selector-btn:hover{border-color:var(--orange)}
+.selector-btn.active{border-color:var(--orange);background:var(--orange);color:white}
+
+.ingredients-card{background:white;border-radius:24px;padding:20px 24px;margin-bottom:14px;box-shadow:var(--shadow)}
+.ingredients-card h3{font-size:13px;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
+.ingredient-row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1.5px dashed #F2E8D8}
+.ingredient-row:last-child{border-bottom:none}
+.ingredient-name{font-size:15px;font-weight:600;color:var(--text)}
+.ingredient-amount{font-size:14px;font-weight:700;color:white;background:var(--orange);padding:4px 14px;border-radius:10px;white-space:nowrap;margin-left:12px}
+
+.empty-card{background:white;border-radius:24px;padding:28px;margin-bottom:14px;text-align:center;box-shadow:var(--shadow)}
+.empty-card .big-icon{font-size:36px;margin-bottom:8px}
+.empty-card p{font-size:15px;font-weight:600;color:var(--text-light)}
+
+.tips-card{background:linear-gradient(135deg,#FFF8E1,#FFFDE7);border:2.5px solid var(--yellow);border-radius:24px;padding:18px 22px;margin-bottom:14px}
+.tips-card h3{font-size:13px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.tips-card p{font-size:14px;font-weight:500;color:var(--text-mid);line-height:1.6}
+
+.order-card{background:linear-gradient(135deg,var(--green),var(--teal));border-radius:24px;padding:18px 22px;color:white;margin-bottom:14px;box-shadow:0 6px 20px rgba(6,214,160,0.2)}
+.order-card h3{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px;opacity:0.85;margin-bottom:10px}
+.order-card .steps{font-size:15px;font-weight:600;line-height:2}
+.order-card .warning{margin-top:6px;opacity:0.9;font-size:13px;font-weight:600}
+
+.view-enter{animation:fadeSlideIn .25s ease-out}
+@keyframes fadeSlideIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+<script>
+// ==================== BUILT-IN RECIPES ====================
+const R=[
+// --- BREADS ---
+{id:1,name:"Soft Bread",icon:"\u{1F35E}",desc:"Classic soft white bread \u2014 the perfect starter loaf!",fn:1,cat:"breads",colours:["Light","Medium","Dark"],ls:["500g","750g","1000g"],sizes:{"500g":[["Water","160ml"],["Oil","2 tbsp"],["Salt","\xBD tsp"],["Sugar","1 tbsp"],["Milk powder","2 tbsp"],["White bread flour","300g"],["Yeast","1 tsp"]],"750g":[["Water","240ml"],["Oil","2 tbsp"],["Salt","1 tsp"],["Sugar","2 tbsp"],["Milk powder","3 tbsp"],["White bread flour","400g"],["Yeast","1 tsp"]],"1000g":[["Water","310ml"],["Oil","2 tbsp"],["Salt","1\xBD tsp"],["Sugar","3 tbsp"],["Milk powder","5 tbsp"],["White bread flour","520g"],["Yeast","1\xBD tsp"]]},tips:"Water first, dry ingredients next, yeast last on top of the flour!"},
+{id:2,name:"Sweet Bread",icon:"\u{1F9C1}",desc:"Light, airy & sweet \u2014 like a hug in bread form!",fn:2,cat:"breads",colours:["Light","Medium","Dark"],ls:["500g","750g","1000g"],sizes:{"500g":[["Water","160ml"],["Oil","2 tbsp"],["Salt","\xBD tsp"],["Sugar","4 tbsp"],["Milk powder","2 tbsp"],["White bread flour","250g"],["Essence","\xBD tsp"],["Yeast","1\xBC tsp"]],"750g":[["Water","240ml"],["Oil","2 tbsp"],["Salt","1 tsp"],["Sugar","6 tbsp"],["Milk powder","3 tbsp"],["White bread flour","375g"],["Essence","\xBD tsp"],["Yeast","1\xBC tsp"]],"1000g":[["Water","310ml"],["Oil","4 tbsp"],["Salt","1\xBD tsp"],["Sugar","8 tbsp"],["Milk powder","4 tbsp"],["White bread flour","510g"],["Essence","\xBD tsp"],["Yeast","1\xBD tsp"]]},tips:"More sugar = more browning. Rises longer for that fluffy texture!"},
+{id:3,name:"Sourdough",icon:"\u{1F956}",desc:"Tangy & special \u2014 you make the starter yourself!",fn:3,cat:"special",colours:["Light","Medium","Dark"],ls:["500g","750g","1000g"],sizes:{"500g":[["Starter","150ml"],["Water (lukewarm)","90ml"],["Oil","1 tbsp"],["Strong white bread flour","250g"],["Salt","1 tsp"],["Caster sugar","1\xBD tsp"]],"750g":[["Starter","225g"],["Water (lukewarm)","130ml"],["Oil","1 tbsp"],["Strong white bread flour","375g"],["Salt","1 tsp"],["Caster sugar","1\xBD tsp"]],"1000g":[["Starter","300ml"],["Water (lukewarm)","170ml"],["Oil","2 tbsp"],["Strong white bread flour","500g"],["Salt","1\xBD tsp"],["Caster sugar","1 tbsp"]]},tips:"\u{1F9EA} Science project! Starter: 450g flour + 2 tsp yeast + 300ml lukewarm water. Cover & wait 3\u20135 days for bubbles!"},
+{id:4,name:"French Bread",icon:"\u{1F950}",desc:"Crispy crust, soft inside \u2014 ooh la la!",fn:4,cat:"breads",colours:["Light","Medium","Dark"],ls:["500g","750g","1000g"],sizes:{"500g":[["Water","155ml"],["Oil","2 tbsp"],["Salt","\xBD tsp"],["White bread flour","250g"],["Yeast","1\xBC tsp"]],"750g":[["Water","230ml"],["Oil","2 tbsp"],["Salt","1 tsp"],["White bread flour","375g"],["Yeast","1\xBC tsp"]],"1000g":[["Water","300ml"],["Oil","3 tbsp"],["Salt","1\xBD tsp"],["White bread flour","500g"],["Yeast","1\xBD tsp"]]},tips:"Use butter instead of oil for extra yumminess!"},
+{id:5,name:"Whole Wheat",icon:"\u{1F33E}",desc:"Healthy & hearty \u2014 packed with goodness!",fn:5,cat:"breads",colours:["Light","Medium"],ls:["500g","750g","1000g"],sizes:{"500g":[["Water","155ml"],["Oil","2 tbsp"],["Salt","\xBD tsp"],["Sugar","2 tbsp"],["Milk powder","2 tbsp"],["Whole wheat flour","200g"],["White bread flour","100g"],["Yeast","1 tsp"]],"750g":[["Water","230ml"],["Oil","2 tbsp"],["Salt","\xBD tsp"],["Sugar","3 tbsp"],["Milk powder","3 tbsp"],["Whole wheat flour","300g"],["White bread flour","150g"],["Yeast","1 tsp"]],"1000g":[["Water","310ml"],["Oil","2 tbsp"],["Salt","1\xBD tsp"],["Sugar","4 tbsp"],["Milk powder","4 tbsp"],["Whole wheat flour","400g"],["White bread flour","200g"],["Yeast","1\xBD tsp"]]},tips:"Pause after mixing to scrape flour from the sides. Don\u2019t use the delay timer!"},
+{id:6,name:"Quick Bread",icon:"\u26A1",desc:"Banana & choc chip \u2014 ready faster than normal!",fn:6,cat:"special",colours:["Light","Medium","Dark"],ls:["500g","750g","1000g"],sizes:{"500g":[["Plain flour","180g"],["Baking powder","1 tsp"],["Bicarb of soda","\xBD tsp"],["Sugar","100g"],["Oil","2 tbsp"],["Eggs","2"],["Ripe bananas","1"],["Chocolate chips","40g"]],"750g":[["Plain flour","260g"],["Baking powder","1 tsp"],["Bicarb of soda","\xBD tsp"],["Sugar","150g"],["Oil","3 tbsp"],["Eggs","2"],["Ripe bananas","2"],["Chocolate chips","50g"]],"1000g":[["Plain flour","350g"],["Baking powder","1\xBD tsp"],["Bicarb of soda","1 tsp"],["Sugar","200g"],["Oil","4 tbsp"],["Eggs","3"],["Ripe bananas","3"],["Chocolate chips","75g"]]},tips:"\u{1F36B} Choc chips in the PAN not the dispenser (they melt!). After 10 mins, pause & scrape sides."},
+{id:7,name:"Sugar-Free",icon:"\u{1F96C}",desc:"Uses Stevia \u2014 sweet without the sugar!",fn:7,cat:"breads",colours:["Light","Medium","Dark"],ls:["500g","750g","1000g"],sizes:{"500g":[["Water","150ml"],["Oil","2 tbsp"],["Salt","\xBD tsp"],["Egg","1"],["Stevia","\xBD tsp"],["White bread flour","300g"],["Milk powder","2 tbsp"],["Yeast","1 tsp"]],"750g":[["Water","240ml"],["Oil","2 tbsp"],["Salt","\xBD tsp"],["Egg","1"],["Stevia","1 tsp"],["White bread flour","450g"],["Milk powder","3 tbsp"],["Yeast","1\xBC tsp"]],"1000g":[["Water","320ml"],["Oil","3 tbsp"],["Salt","1 tsp"],["Egg","1"],["Stevia","1\xBD tsp"],["White bread flour","600g"],["Milk powder","4 tbsp"],["Yeast","1\xBD tsp"]]},tips:"Try honey or other sweeteners!"},
+{id:8,name:"Multigrain",icon:"\u{1F33F}",desc:"Oatmeal + whole wheat + white = triple power!",fn:8,cat:"breads",colours:["Light","Medium","Dark"],ls:["500g","750g","1000g"],sizes:{"500g":[["Water","120ml"],["Oil","2 tbsp"],["Salt","\xBD tsp"],["Sugar","1 tbsp"],["Milk powder","1 tbsp"],["Whole wheat flour","50g"],["Oatmeal","50g + 1 tbsp"],["White bread flour","150g"],["Egg","1"],["Yeast","1 tsp"]],"750g":[["Water","170ml"],["Oil","2 tbsp"],["Salt","1 tsp"],["Sugar","1 tbsp"],["Milk powder","2 tbsp"],["Whole wheat flour","75g"],["Oatmeal","75g + 1 tbsp"],["White bread flour","230g"],["Egg","1"],["Yeast","1 tsp"]],"1000g":[["Water","210ml"],["Oil","3 tbsp"],["Salt","1\xBD tsp"],["Sugar","2 tbsp"],["Milk powder","3 tbsp"],["Whole wheat flour","100g"],["Oatmeal","100g + 2 tbsp"],["White bread flour","300g"],["Egg","1"],["Yeast","1\xBD tsp"]]},tips:"Sprinkle oatmeal on top while hot for a pro finish!"},
+{id:9,name:"Milky Loaf",icon:"\u{1F95B}",desc:"Super soft & milky \u2014 everyone's favourite!",fn:9,cat:"breads",colours:["Light","Medium","Dark"],ls:["500g","750g","1000g"],sizes:{"500g":[["Milk","160ml"],["Oil","2 tbsp"],["Sugar","1 tbsp"],["White bread flour","300g"],["Egg","1"],["Milk powder","2 tbsp"],["Yeast","1\xBC tsp"]],"750g":[["Milk","240ml"],["Oil","2 tbsp"],["Sugar","1 tbsp"],["White bread flour","400g"],["Egg","1"],["Milk powder","3 tbsp"],["Yeast","1\xBC tsp"]],"1000g":[["Milk","310ml"],["Oil","3 tbsp"],["Sugar","2 tbsp"],["White bread flour","520g"],["Egg","1"],["Milk powder","5 tbsp"],["Yeast","1\xBD tsp"]]},tips:"Any milk works \u2014 skimmed, semi-skimmed or full fat!"},
+{id:10,name:"Sponge Cake",icon:"\u{1F382}",desc:"Fluffy vanilla cake \u2014 add your own flavours!",fn:10,cat:"sweet",colours:[],ls:[],sizes:{"default":[["Soft butter/margarine","225g"],["Caster sugar","225g"],["Eggs","4"],["Self-raising flour","225g"],["Vanilla extract","1 tsp"]]},tips:"Try lemon zest, cocoa powder, or orange extract!",no:true},
+{id:11,name:"Tortilla Dough",icon:"\u{1FAD3}",desc:"For tortillas, roti & flatbreads!",fn:11,cat:"dough",colours:[],ls:[],sizes:{"default":[["Water (lukewarm)","250ml"],["Oil","75ml"],["Salt","1 tsp"],["Baking powder","1 tsp"],["Strong white bread flour","390g"]]},tips:"Cut into 16 pieces, roll into circles, fry in a dry pan!"},
+{id:12,name:"Pizza Dough",icon:"\u{1F355}",desc:"Make dough for pizza, rolls & more!",fn:12,cat:"dough",colours:[],ls:[],sizes:{"default":[["Water","240ml"],["Oil","2 tbsp"],["Salt","1\xBD tsp"],["Sugar","1 tbsp"],["Strong white bread flour","470g"],["Yeast","1\xBD tsp"]]},tips:"Dough only \u2014 remove, shape, let rise 40 mins, then bake with Function 14!"},
+{id:13,name:"Jam",icon:"\u{1F353}",desc:"Homemade strawberry jam!",fn:13,cat:"sweet",colours:[],ls:[],sizes:{"default":[["Strawberries (mashed)","300g"],["Jam sugar","300g"],["Lemon juice","1 lemon"]]},tips:"\u{1F525} Very hot \u2014 grown-ups handle this! Cool in fridge to thicken.",no:true},
+{id:14,name:"Bake Only",icon:"\u{1F525}",desc:"Just baking \u2014 after dough or to add colour!",fn:14,cat:"sweet",colours:[],ls:[],sizes:{"default":[]},tips:"Use after Pizza Dough (#12). Or bake a pale loaf a bit more!",no:true},
+{id:15,name:"Yoghurt",icon:"\u{1F95B}",desc:"Make your own yoghurt overnight!",fn:15,cat:"sweet",colours:[],ls:[],sizes:{"default":[["Long life milk","350ml"],["Natural yoghurt","50ml"],["Sugar","3 tbsp"]]},tips:"8hrs = thick. 12hrs = pourable. Add milk powder for extra thickness!",no:true},
+{id:16,name:"Gluten Free",icon:"\u{1F331}",desc:"Special recipe for gluten-free flour!",fn:16,cat:"special",colours:["Light","Medium","Dark"],ls:["500g","750g","1000g"],sizes:{"500g":[["Milk","175ml"],["Oil","3 tbsp"],["Sugar","\xBD tsp"],["Gluten-free flour","260g"],["Egg","1"],["Yeast","1 tsp"]],"750g":[["Milk","250ml"],["Oil","5 tbsp"],["Sugar","1 tsp"],["Gluten-free flour","380g"],["Egg","1"],["Yeast","1 tsp"]],"1000g":[["Milk","310ml"],["Oil","6 tbsp"],["Sugar","1 tsp"],["Gluten-free flour","450g"],["Eggs","2"],["Yeast","2 tsp"]]},tips:"Dough is wetter \u2014 more like batter. That\u2019s normal!"},
+{id:17,name:"Ferment",icon:"\u{1FAE7}",desc:"Let your own dough rise for 30 mins!",fn:17,cat:"dough",colours:[],ls:[],sizes:{"default":[]},tips:"Your own dough, 30 mins rising = deeper flavour!",no:true},
+{id:"os",name:"Orange & Sultana",icon:"\u{1F34A}",desc:"Spiced fruit loaf with real orange!",fn:2,fnN:"Sweet Bread (#2)",cat:"breads",colours:["Light","Medium","Dark"],ls:["750g","1000g"],sizes:{"750g":[["Water","280ml"],["Oil","6\xBD tsp"],["Salt","1 tsp"],["Light brown sugar","6\xBD tsp"],["White bread flour","470g"],["Milk powder","6 tsp"],["Mixed spice","2 tsp"],["Cinnamon","1 tsp"],["Orange zest","1 orange"],["Orange juice","1 orange"],["Yeast","1\xBD tsp"],["Sultanas (dispenser)","\xBD cup"]],"1000g":[["Water","365ml"],["Oil","8\xBD tsp"],["Salt","1\xBD tsp"],["Light brown sugar","8\xBD tsp"],["White bread flour","600g"],["Milk powder","8\xBD tsp"],["Mixed spice","2\xBD tsp"],["Cinnamon","1\xBD tsp"],["Orange zest","1 orange"],["Orange juice","1 orange"],["Yeast","1\xBD tsp"],["Sultanas (dispenser)","\xBE cup"]]},tips:"Sultanas in the dispenser \u2014 added automatically!"},
+
+// ==================== EXPLORE RECIPES (BBC Good Food inspired, adapted) ====================
+{id:"e1",name:"Olive & Rosemary Bread",icon:"\u{1FAD2}",desc:"Mediterranean-style with olives and fresh rosemary!",fn:1,fnN:"Soft Bread (#1)",cat:"explore",inspired:true,colours:["Medium","Dark"],ls:["750g","1000g"],sizes:{"750g":[["Water","230ml"],["Olive oil","3 tbsp"],["Salt","1 tsp"],["Sugar","1 tbsp"],["White bread flour","400g"],["Dried rosemary","1\xBD tsp"],["Yeast","1\xBC tsp"],["Pitted olives, chopped (dispenser)","80g"]],"1000g":[["Water","300ml"],["Olive oil","4 tbsp"],["Salt","1\xBD tsp"],["Sugar","1\xBD tbsp"],["White bread flour","500g"],["Dried rosemary","2 tsp"],["Yeast","1\xBD tsp"],["Pitted olives, chopped (dispenser)","120g"]]},tips:"Use a mix of green and Kalamata olives for the best flavour! Chop them roughly and put in the dispenser so they get added after kneading. Pat dry with kitchen paper first so they don\u2019t add too much moisture."},
+{id:"e2",name:"Cheese & Herb Bread",icon:"\u{1F9C0}",desc:"Cheesy, herby and absolutely delicious!",fn:1,fnN:"Soft Bread (#1)",cat:"explore",inspired:true,colours:["Medium","Dark"],ls:["750g","1000g"],sizes:{"750g":[["Water","230ml"],["Oil","2 tbsp"],["Salt","1 tsp"],["Sugar","1 tbsp"],["Milk powder","2 tbsp"],["White bread flour","380g"],["Dried mixed herbs","2 tsp"],["Yeast","1\xBC tsp"],["Mature cheddar, cubed small (dispenser)","80g"]],"1000g":[["Water","300ml"],["Oil","3 tbsp"],["Salt","1\xBD tsp"],["Sugar","1\xBD tbsp"],["Milk powder","3 tbsp"],["White bread flour","490g"],["Dried mixed herbs","1 tbsp"],["Yeast","1\xBD tsp"],["Mature cheddar, cubed small (dispenser)","120g"]]},tips:"Cut cheese into small cubes (about 1cm) and put in the dispenser. Don\u2019t grate it \u2014 cubes give you lovely cheesy pockets! Red Leicester or Gruy\u00E8re also work brilliantly."},
+{id:"e3",name:"Garlic Bread Loaf",icon:"\u{1F9C4}",desc:"Soft garlic bread \u2014 straight from the machine!",fn:1,fnN:"Soft Bread (#1)",cat:"explore",inspired:true,colours:["Light","Medium"],ls:["750g","1000g"],sizes:{"750g":[["Water","230ml"],["Olive oil","3 tbsp"],["Garlic cloves, crushed","3"],["Salt","1 tsp"],["Sugar","1 tbsp"],["Milk powder","2 tbsp"],["White bread flour","400g"],["Garlic granules","1 tsp"],["Dried parsley","2 tsp"],["Yeast","1\xBC tsp"]],"1000g":[["Water","300ml"],["Olive oil","4 tbsp"],["Garlic cloves, crushed","4"],["Salt","1\xBD tsp"],["Sugar","1\xBD tbsp"],["Milk powder","3 tbsp"],["White bread flour","500g"],["Garlic granules","1\xBD tsp"],["Dried parsley","1 tbsp"],["Yeast","1\xBD tsp"]]},tips:"Add the crushed garlic with the liquids at the start. The garlic granules go in with the flour for a double garlic hit! Slice while warm and spread with butter \u2014 incredible."},
+{id:"e4",name:"Brioche Loaf",icon:"\u{1F950}",desc:"Rich, buttery French bread \u2014 amazing for toast!",fn:2,fnN:"Sweet Bread (#2)",cat:"explore",inspired:true,colours:["Light","Medium"],ls:["750g","1000g"],sizes:{"750g":[["Milk (warm)","140ml"],["Eggs","2"],["Melted butter","60g"],["Salt","1 tsp"],["Sugar","3 tbsp"],["White bread flour","380g"],["Yeast","1\xBD tsp"]],"1000g":[["Milk (warm)","180ml"],["Eggs","3"],["Melted butter","80g"],["Salt","1\xBD tsp"],["Sugar","4 tbsp"],["White bread flour","480g"],["Yeast","1\xBD tsp"]]},tips:"Use Sweet Bread function \u2014 the extra rise time makes brioche beautifully fluffy. Add melted (not hot!) butter with the liquids. Select Light crust to avoid over-browning. Makes amazing French toast the next day!"},
+{id:"e5",name:"Sun-Dried Tomato Bread",icon:"\u{1F345}",desc:"Tangy, savoury & packed with Italian flavour!",fn:1,fnN:"Soft Bread (#1)",cat:"explore",inspired:true,colours:["Medium","Dark"],ls:["750g","1000g"],sizes:{"750g":[["Water","210ml"],["Oil from sun-dried tomato jar","2 tbsp"],["Salt","1 tsp"],["Sugar","1 tbsp"],["Italian seasoning","2 tsp"],["White bread flour","400g"],["Yeast","1\xBC tsp"],["Sun-dried tomatoes, chopped (dispenser)","70g"]],"1000g":[["Water","280ml"],["Oil from sun-dried tomato jar","3 tbsp"],["Salt","1\xBD tsp"],["Sugar","1\xBD tbsp"],["Italian seasoning","1 tbsp"],["White bread flour","500g"],["Yeast","1\xBD tsp"],["Sun-dried tomatoes, chopped (dispenser)","100g"]]},tips:"Use oil-packed sun-dried tomatoes and use that same oil in the recipe \u2014 loads of extra flavour! Pat the tomatoes dry after chopping before putting in the dispenser."},
+{id:"e6",name:"Chocolate Bread",icon:"\u{1F36B}",desc:"Sweet chocolatey loaf \u2014 kids go wild for this!",fn:2,fnN:"Sweet Bread (#2)",cat:"explore",inspired:true,colours:["Light","Medium"],ls:["750g","1000g"],sizes:{"750g":[["Milk (warm)","240ml"],["Melted butter","2 tbsp"],["Salt","\xBD tsp"],["Sugar","4 tbsp"],["Cocoa powder","3 tbsp"],["White bread flour","380g"],["Yeast","1\xBC tsp"],["Chocolate chips (dispenser)","80g"]],"1000g":[["Milk (warm)","310ml"],["Melted butter","3 tbsp"],["Salt","1 tsp"],["Sugar","5 tbsp"],["Cocoa powder","4 tbsp"],["White bread flour","490g"],["Yeast","1\xBD tsp"],["Chocolate chips (dispenser)","120g"]]},tips:"Use Light crust \u2014 the cocoa makes it brown faster! Put choc chips in the dispenser, NOT the pan (they\u2019ll melt into the dough otherwise). Amazing sliced and toasted with Nutella."},
+{id:"e7",name:"Cinnamon Swirl Bread",icon:"\u{1F36F}",desc:"Warm, spiced & swirled with cinnamon sugar!",fn:2,fnN:"Sweet Bread (#2)",cat:"explore",inspired:true,colours:["Light","Medium"],ls:["750g","1000g"],sizes:{"750g":[["Milk (warm)","230ml"],["Melted butter","2 tbsp"],["Salt","1 tsp"],["Sugar","3 tbsp"],["Cinnamon","2 tsp"],["White bread flour","400g"],["Egg","1"],["Yeast","1\xBC tsp"]],"1000g":[["Milk (warm)","300ml"],["Melted butter","3 tbsp"],["Salt","1\xBD tsp"],["Sugar","4 tbsp"],["Cinnamon","1 tbsp"],["White bread flour","500g"],["Egg","1"],["Yeast","1\xBD tsp"]]},tips:"For proper swirls: use Leaven Dough (#12) first, then roll out flat, spread with 30g soft butter + 3 tbsp brown sugar + 2 tsp cinnamon, roll up like a swiss roll, put in pan, then Bake (#14). Or use Sweet Bread (#2) for a simpler cinnamon-throughout loaf!"},
+{id:"e8",name:"Herb Focaccia Dough",icon:"\u{1F33F}",desc:"Make the dough, then bake your own focaccia!",fn:12,fnN:"Leaven Dough (#12)",cat:"explore",inspired:true,colours:[],ls:[],sizes:{"default":[["Water (warm)","280ml"],["Olive oil","3 tbsp"],["Salt","1\xBD tsp"],["Sugar","1 tsp"],["White bread flour","450g"],["Dried rosemary","2 tsp"],["Dried oregano","1 tsp"],["Yeast","1\xBD tsp"]]},tips:"Use Leaven Dough (#12) to make the dough. Remove, press into an oiled baking tray, dimple with your fingers, drizzle with olive oil, sprinkle sea salt + more rosemary. Let rise 30 mins, then bake at 220\u00B0C for 20\u201325 mins until golden. The whole family can help with the dimpling!"},
+{id:"e9",name:"Banana Bread",icon:"\u{1F34C}",desc:"Classic BBC favourite \u2014 moist & delicious!",fn:6,fnN:"Quick Bread (#6)",cat:"explore",inspired:true,colours:["Medium","Dark"],ls:["750g"],sizes:{"750g":[["Ripe bananas (mashed)","3"],["Melted butter","75g"],["Eggs","2"],["Buttermilk","2 tbsp"],["Vanilla extract","1 tsp"],["Caster sugar","140g"],["Plain flour","260g"],["Bicarb of soda","1 tsp"],["Salt","\xBD tsp"]]},tips:"The riper the bananas the better \u2014 black-spotted ones are perfect! Mash them well before adding. After 10 mins of mixing, pause and scrape the sides. This won\u2019t rise like yeast bread but will be dense and moist."},
+{id:"e10",name:"Pesto & Parmesan Bread",icon:"\u{1F343}",desc:"Italian-inspired with basil pesto and cheese!",fn:1,fnN:"Soft Bread (#1)",cat:"explore",inspired:true,colours:["Medium","Dark"],ls:["750g","1000g"],sizes:{"750g":[["Water","200ml"],["Green pesto","3 tbsp"],["Olive oil","1 tbsp"],["Salt","1 tsp"],["Sugar","1 tbsp"],["White bread flour","400g"],["Grated Parmesan (in dispenser)","40g"],["Yeast","1\xBC tsp"]],"1000g":[["Water","270ml"],["Green pesto","4 tbsp"],["Olive oil","2 tbsp"],["Salt","1\xBD tsp"],["Sugar","1\xBD tbsp"],["White bread flour","500g"],["Grated Parmesan (in dispenser)","60g"],["Yeast","1\xBD tsp"]]},tips:"Add pesto with the liquids. Put the Parmesan in the dispenser so it\u2019s folded in after kneading. Shop-bought pesto works perfectly! Delicious with soup."}
+];
+
+const CATS=[{n:"Breads",icon:"\u{1F35E}",c:"breads"},{n:"Special",icon:"\u2728",c:"special"},{n:"Dough",icon:"\u{1FAD3}",c:"dough"},{n:"Sweet & More",icon:"\u{1F370}",c:"sweet"},{n:"Explore",icon:"\u{1F50D}",c:"explore"}];
+
+let S={v:"home",r:null,sz:null,cl:null,cat:null};
+function ss(u){Object.assign(S,u);render()}
+function render(){document.getElementById("app").innerHTML=S.v==="home"?renderHome():renderRecipe()}
+
+function getCat(r){return r.cat||"breads"}
+function catColor(c){return{breads:"orange",special:"purple",dough:"green",sweet:"pink",explore:"blue"}[c]||"orange"}
+
+function renderHome(){
+  const showAll=!S.cat;
+  const f=S.cat?R.filter(r=>r.cat===S.cat):R;
+  // Split into built-in vs explore when showing all
+  const builtIn=showAll?f.filter(r=>r.cat!=="explore"):[];
+  const explore=showAll?f.filter(r=>r.cat==="explore"):[];
+  const showSections=showAll&&explore.length>0;
+
+  const cards=arr=>arr.map(r=>`<button class="recipe-card" data-cat="${getCat(r)}" onclick="selR('${r.id}')"><div class="recipe-icon-box">${r.icon}</div><div style="flex:1;min-width:0"><div class="recipe-card-title">${r.name}</div><div class="recipe-card-desc">${r.desc}</div></div><div class="recipe-card-badge">#${r.fn}</div></button>`).join('');
+
+  return`<header class="header"><div class="header-icon">\u{1F35E}</div><h1>Fresh Bake</h1><p class="subtitle">Our Family Breadmaker Guide</p></header><div class="rainbow"></div>
+  <div class="tabs"><button class="tab ${!S.cat?'active':''}" data-c="all" onclick="ss({cat:null})">All</button>${CATS.map(c=>`<button class="tab ${S.cat===c.c?'active':''}" data-c="${c.c}" onclick="ss({cat:S.cat==='${c.c}'?null:'${c.c}'})">${c.icon} ${c.n}</button>`).join('')}</div>
+  <div class="recipe-list view-enter">
+  ${showSections?`<div class="section-header">\u{1F4D6} Machine Recipes</div>${cards(builtIn)}<div class="section-header">\u{1F50D} Explore \u2014 Inspired by BBC Good Food</div>${cards(explore)}`:cards(f)}
+  </div>
+  <div class="reminders"><h3>\u{1F4DD} Remember!</h3><p>\u2022 <strong>tsp</strong> = small spoon &nbsp;|&nbsp; <strong>tbsp</strong> = big spoon<br>\u2022 Water first \u2192 dry ingredients \u2192 yeast LAST<br>\u2022 Keep yeast away from salt & liquid<br>\u2022 Max flour: 600g &nbsp;|&nbsp; Max yeast: 3 tsp<br>\u2022 Water: 20\u201325\xB0C &nbsp;|&nbsp; Room: 15\u201334\xB0C</p></div>`;
+}
+
+function renderRecipe(){
+  const r=S.r;if(!r)return'';
+  const ing=r.sizes[S.sz]||r.sizes["default"]||[];
+  const fnL=r.fnN||("Function "+r.fn);
+  const cc=catColor(getCat(r));
+  const ci=c=>c==='Light'?'\u2600\uFE0F':c==='Medium'?'\u{1F536}':'\u{1F7E4}';
+  let st=`Press <strong>MENU</strong> \u2192 <strong>${fnL}</strong>`;
+  if(S.sz)st+=` \u2192 <strong>LOAF</strong> = <strong>${S.sz}</strong>`;
+  if(S.cl)st+=` \u2192 <strong>COLOUR</strong> = <strong>${S.cl}</strong>`;
+  st+=` \u2192 <strong>START/STOP</strong> \u{1F44D}`;
+
+  const heroBg=cc==='orange'?'#FFF3E0,#FFE0B2':cc==='purple'?'#F3E5F5,#CE93D8':cc==='green'?'#E0F2F1,#80CBC4':cc==='blue'?'#E1F5FE,#81D4FA':'#FCE4EC,#F48FB1';
+
+  return`<header class="header compact"><button class="back-btn" onclick="goHome()">\u2190</button></header><div class="view-enter">
+  <div class="recipe-hero"><div class="recipe-hero-icon" style="background:linear-gradient(135deg,${heroBg})">${r.icon}</div><h2>${r.name}</h2><p>${r.desc}</p>${r.inspired?'<div class="inspired-tag">\u{1F50D} Inspired by BBC Good Food</div>':''}</div>
+  <div class="settings-card ${cc}"><div class="settings-label">\u2699\uFE0F Machine Settings</div><div class="settings-grid"><div class="settings-item"><div class="label">Programme</div><div class="value">${fnL}</div></div>${S.cl?`<div class="settings-item"><div class="label">Colour</div><div class="value">${S.cl}</div></div>`:''}${S.sz?`<div class="settings-item"><div class="label">Size</div><div class="value">${S.sz}</div></div>`:''}</div><div class="settings-steps">${st}</div></div>
+  ${r.ls.length?`<div class="selector"><div class="selector-label">Loaf Size</div><div class="selector-row">${r.ls.map(s=>`<button class="selector-btn ${S.sz===s?'active':''}" onclick="ss({sz:'${s}'})">${s}</button>`).join('')}</div></div>`:''}
+  ${r.colours.length?`<div class="selector" style="margin-bottom:18px"><div class="selector-label">Crust Colour</div><div class="selector-row">${r.colours.map(c=>`<button class="selector-btn ${S.cl===c?'active':''}" onclick="ss({cl:'${c}'})">${ci(c)} ${c}</button>`).join('')}</div></div>`:''}
+  ${ing.length?`<div class="ingredients-card"><h3>\u{1F9FA} What You Need</h3>${ing.map(([n,a])=>`<div class="ingredient-row"><span class="ingredient-name">${n}</span><span class="ingredient-amount">${a}</span></div>`).join('')}</div>`:`<div class="empty-card"><div class="big-icon">${r.icon}</div><p>Use your own recipe or prepared dough!</p></div>`}
+  ${r.tips?`<div class="tips-card"><h3>\u{1F4A1} Top Tip</h3><p>${r.tips}</p></div>`:''}
+  ${ing.length&&!r.no?`<div class="order-card"><h3>\u{1F4CB} Adding Order</h3><div class="steps">1\uFE0F\u20E3 Liquid first (water/milk)<br>2\uFE0F\u20E3 Oil, eggs, salt, sugar<br>3\uFE0F\u20E3 Milk powder & flour<br>4\uFE0F\u20E3 Yeast LAST \u2014 on top of dry flour</div><div class="warning">\u26A0\uFE0F Keep yeast away from salt & liquid!</div></div>`:''}</div>`;
+}
+
+function selR(id){const r=R.find(x=>String(x.id)===String(id));if(!r)return;ss({v:"recipe",r:r,sz:r.ls.length?r.ls[0]:null,cl:r.colours.length?(r.colours[1]||r.colours[0]):null});window.scrollTo({top:0,behavior:'smooth'})}
+function goHome(){ss({v:"home",r:null,sz:null,cl:null});window.scrollTo({top:0,behavior:'smooth'})}
+
+render();
+</script>
+</body>
+</html>
