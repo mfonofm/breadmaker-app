@@ -54,6 +54,10 @@ body::after{content:'';position:fixed;bottom:-80px;left:-40px;width:300px;height
 
 .header{text-align:center;padding-top:32px;padding-bottom:4px;position:relative}
 .header.compact{padding-top:16px}
+.recipe-topbar{display:flex;align-items:center;gap:10px;padding:12px 0 8px}
+.recipe-topbar .back-btn{position:static;flex-shrink:0}
+.recipe-topbar .df-toggle{flex:1;margin-bottom:0}
+.recipe-topbar .dark-btn{position:static;flex-shrink:0}
 .dark-btn{position:absolute;right:4px;top:28px;background:var(--card-bg);border:2.5px solid transparent;border-radius:50%;width:42px;height:42px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;transition:all .2s;box-shadow:var(--shadow);z-index:10}
 .dark-btn:hover{transform:scale(1.1)}
 body.dark .dark-btn{border-color:#3A3A55}
@@ -492,8 +496,7 @@ function renderRecipe(){
   let links='';
   if(r.links){r.links.forEach(l=>{links+=linkCard(l.id,l.label)})}
 
-  return`<header class="header compact"><button class="back-btn" onclick="goHome()">\u2190</button><button class="dark-btn" onclick="toggleDark()">${S.dark?'\u{1F319}':'\u{2600}\uFE0F'}</button></header><div class="view-enter">
-  <div class="df-toggle" style="margin-top:8px"><div class="df-toggle-left"><span class="icon">\u{1F95B}</span><div><div class="label">Dairy-Free${S.df?' <span class="df-badge">ON</span>':''}</div><div class="sub">${S.df?'Showing dairy-free swaps':'Tap to swap dairy'}</div></div></div><label class="switch"><input type="checkbox" ${S.df?'checked':''} onchange="toggleDF()"><span class="slider"></span></label></div>
+  return`<div class="recipe-topbar"><button class="back-btn" onclick="goHome()">\u2190</button><div class="df-toggle"><div class="df-toggle-left"><span class="icon">\u{1F95B}</span><div><div class="label">Dairy-Free${S.df?' <span class="df-badge">ON</span>':''}</div><div class="sub">${S.df?'Showing dairy-free swaps':'Tap to swap dairy'}</div></div></div><label class="switch"><input type="checkbox" ${S.df?'checked':''} onchange="toggleDF()"><span class="slider"></span></label></div><button class="dark-btn" onclick="toggleDark()">${S.dark?'\u{1F319}':'\u{2600}\uFE0F'}</button></div><div class="view-enter">
   <div class="recipe-hero"><div class="recipe-hero-icon" style="background:linear-gradient(135deg,${heroBg})">${r.icon}</div><h2>${r.name}</h2><p>${r.desc}</p>${r.inspired?'<div class="inspired-tag">\u{1F50D} Inspired by BBC Good Food</div>':''}</div>
   <div class="settings-card ${cc}"><div class="settings-label">\u2699\uFE0F Machine Settings</div><div class="settings-grid"><div class="settings-item"><div class="label">Programme</div><div class="value">${fnL}</div></div>${S.cl?`<div class="settings-item"><div class="label">Colour</div><div class="value">${S.cl}</div></div>`:''}${S.sz?`<div class="settings-item"><div class="label">Size</div><div class="value">${S.sz}</div></div>`:''}</div><div class="settings-steps">${st}</div></div>
   ${r.info?`<div class="info-bar">${r.info.makes?`<div class="info-pill"><span class="info-icon">\u{1F4CF}</span><div><div class="info-text">Makes</div><div class="info-value">${r.info.makes}</div></div></div>`:''}${r.info.serves?`<div class="info-pill"><span class="info-icon">\u{1F37D}\uFE0F</span><div><div class="info-text">Serves</div><div class="info-value">${r.info.serves}</div></div></div>`:''}${r.info.fresh?`<div class="info-pill"><span class="info-icon">\u{1F551}</span><div><div class="info-text">Stays fresh</div><div class="info-value">${r.info.fresh}</div></div></div>`:''}</div>`:''}
