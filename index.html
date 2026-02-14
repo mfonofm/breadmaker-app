@@ -15,14 +15,48 @@
   --purple:#9B5DE5;--red:#EF476F;--teal:#26C6DA;
   --bg:#FFF5E6;--text:#2D1B00;--text-mid:#5C3A1E;--text-light:#8B7355;
   --shadow:0 4px 16px rgba(100,50,0,0.08);
+  --card-bg:white;
 }
+body.dark{
+  --bg:#1A1A2E;--text:#E8E0D4;--text-mid:#C4B8A8;--text-light:#8E8272;
+  --shadow:0 4px 16px rgba(0,0,0,0.3);
+  --card-bg:#252540;
+}
+body.dark::before{background:radial-gradient(circle,rgba(255,107,157,0.06) 0%,transparent 70%)}
+body.dark::after{background:radial-gradient(circle,rgba(6,214,160,0.05) 0%,transparent 70%)}
+body.dark .tab{background:var(--card-bg);color:var(--text-mid)}
+body.dark .recipe-card{background:var(--card-bg)}
+body.dark .selector-btn{background:var(--card-bg);border-color:#3A3A55;color:var(--text-mid)}
+body.dark .selector-btn:hover{border-color:var(--orange)}
+body.dark .ingredient-row{border-bottom-color:#3A3A55}
+body.dark .tips-card{background:linear-gradient(135deg,#2A2A1E,#33332A);border-color:#665C1A}
+body.dark .link-card{background:var(--card-bg);border-color:#1A5A7A}
+body.dark .step-card{background:var(--card-bg)}
+body.dark .step-filling .ingredient-row{border-bottom-color:#3A3A55}
+body.dark .form-input,.dark .form-select,.dark .form-textarea{background:var(--card-bg);border-color:#3A3A55;color:var(--text)}
+body.dark .switch .slider{background:#3A3A55}
+body.dark .info-pill{background:var(--card-bg)}
+body.dark .recipe-card-badge{opacity:0.85}
+body.dark .recipe-card[data-cat="breads"] .recipe-card-badge{background:#3D3520;color:#FFD166}
+body.dark .recipe-card[data-cat="special"] .recipe-card-badge{background:#2D2040;color:#CE93D8}
+body.dark .recipe-card[data-cat="dough"] .recipe-card-badge{background:#1A302E;color:#80CBC4}
+body.dark .recipe-card[data-cat="sweet"] .recipe-card-badge{background:#3D2030;color:#F48FB1}
+body.dark .recipe-card[data-cat="explore"] .recipe-card-badge{background:#1A2A3D;color:#81D4FA}
+body.dark .recipe-card[data-cat="breads"] .recipe-icon-box{background:linear-gradient(135deg,#3D3520,#4A4028)}
+body.dark .recipe-card[data-cat="special"] .recipe-icon-box{background:linear-gradient(135deg,#2D2040,#3A2850)}
+body.dark .recipe-card[data-cat="dough"] .recipe-icon-box{background:linear-gradient(135deg,#1A302E,#253D3A)}
+body.dark .recipe-card[data-cat="sweet"] .recipe-icon-box{background:linear-gradient(135deg,#3D2030,#4A2838)}
+body.dark .recipe-card[data-cat="explore"] .recipe-icon-box{background:linear-gradient(135deg,#1A2A3D,#25354A)}
 body{font-family:'Baloo 2','Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100dvh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 body::before{content:'';position:fixed;top:-60px;right:-40px;width:250px;height:250px;border-radius:50%;background:radial-gradient(circle,rgba(255,107,157,0.12) 0%,transparent 70%);pointer-events:none;z-index:0}
 body::after{content:'';position:fixed;bottom:-80px;left:-40px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(6,214,160,0.1) 0%,transparent 70%);pointer-events:none;z-index:0}
 .app{position:relative;z-index:1;max-width:520px;margin:0 auto;padding:0 16px 40px}
 
-.header{text-align:center;padding-top:32px;padding-bottom:4px}
+.header{text-align:center;padding-top:32px;padding-bottom:4px;position:relative}
 .header.compact{padding-top:16px}
+.dark-btn{position:absolute;right:4px;top:28px;background:var(--card-bg);border:2.5px solid transparent;border-radius:50%;width:42px;height:42px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;transition:all .2s;box-shadow:var(--shadow);z-index:10}
+.dark-btn:hover{transform:scale(1.1)}
+body.dark .dark-btn{border-color:#3A3A55}
 .header-icon{font-size:52px;line-height:1;margin-bottom:4px;animation:bounce 2s ease-in-out infinite}
 @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 .header h1{font-family:'Fredoka',sans-serif;font-size:32px;font-weight:700;background:linear-gradient(135deg,var(--orange),var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-0.5px;margin-bottom:2px}
@@ -35,7 +69,7 @@ body::after{content:'';position:fixed;bottom:-80px;left:-40px;width:300px;height
 
 .tabs{display:flex;gap:8px;margin:16px 0;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
-.tab{flex:0 0 auto;padding:10px 18px;border-radius:100px;border:2.5px solid transparent;background:white;color:var(--text-mid);font-family:'Baloo 2',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+.tab{flex:0 0 auto;padding:10px 18px;border-radius:100px;border:2.5px solid transparent;background:var(--card-bg);color:var(--text-mid);font-family:'Baloo 2',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
 .tab:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,0.08)}
 .tab[data-c="all"].active{background:var(--orange);color:white;border-color:var(--orange)}
 .tab[data-c="breads"].active{background:var(--yellow);color:var(--text);border-color:var(--yellow)}
@@ -49,7 +83,7 @@ body::after{content:'';position:fixed;bottom:-80px;left:-40px;width:300px;height
 
 .section-header{font-family:'Fredoka',sans-serif;font-size:18px;font-weight:600;color:var(--text-mid);margin:20px 0 10px;padding-left:4px;display:flex;align-items:center;gap:8px}
 
-.recipe-card{display:flex;align-items:center;gap:14px;padding:16px 18px;background:white;border:none;border-radius:20px;cursor:pointer;text-align:left;transition:transform .15s,box-shadow .15s;box-shadow:var(--shadow);width:100%;font-family:'Baloo 2',sans-serif;border-left:5px solid transparent}
+.recipe-card{display:flex;align-items:center;gap:14px;padding:16px 18px;background:var(--card-bg);border:none;border-radius:20px;cursor:pointer;text-align:left;transition:transform .15s,box-shadow .15s;box-shadow:var(--shadow);width:100%;font-family:'Baloo 2',sans-serif;border-left:5px solid transparent}
 .recipe-card:hover{transform:translateY(-2px) scale(1.01);box-shadow:0 8px 24px rgba(100,50,0,0.1)}
 .recipe-card:active{transform:translateY(0)}
 .recipe-card[data-cat="breads"]{border-left-color:var(--yellow)}
@@ -104,18 +138,18 @@ body::after{content:'';position:fixed;bottom:-80px;left:-40px;width:300px;height
 .selector{margin-bottom:10px}
 .selector-label{font-size:12px;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
 .selector-row{display:flex;gap:8px}
-.selector-btn{flex:1;padding:12px 8px;border-radius:16px;border:2.5px solid #E8D9C0;background:white;color:var(--text-mid);font-family:'Baloo 2',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .15s;text-align:center}
+.selector-btn{flex:1;padding:12px 8px;border-radius:16px;border:2.5px solid #E8D9C0;background:var(--card-bg);color:var(--text-mid);font-family:'Baloo 2',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .15s;text-align:center}
 .selector-btn:hover{border-color:var(--orange)}
 .selector-btn.active{border-color:var(--orange);background:var(--orange);color:white}
 
-.ingredients-card{background:white;border-radius:24px;padding:20px 24px;margin-bottom:14px;box-shadow:var(--shadow)}
+.ingredients-card{background:var(--card-bg);border-radius:24px;padding:20px 24px;margin-bottom:14px;box-shadow:var(--shadow)}
 .ingredients-card h3{font-size:13px;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
 .ingredient-row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1.5px dashed #F2E8D8}
 .ingredient-row:last-child{border-bottom:none}
 .ingredient-name{font-size:15px;font-weight:600;color:var(--text)}
 .ingredient-amount{font-size:14px;font-weight:700;color:white;background:var(--orange);padding:4px 14px;border-radius:10px;white-space:nowrap;margin-left:12px}
 
-.empty-card{background:white;border-radius:24px;padding:28px;margin-bottom:14px;text-align:center;box-shadow:var(--shadow)}
+.empty-card{background:var(--card-bg);border-radius:24px;padding:28px;margin-bottom:14px;text-align:center;box-shadow:var(--shadow)}
 .empty-card .big-icon{font-size:36px;margin-bottom:8px}
 .empty-card p{font-size:15px;font-weight:600;color:var(--text-light)}
 
@@ -129,7 +163,7 @@ body::after{content:'';position:fixed;bottom:-80px;left:-40px;width:300px;height
 .order-card .warning{margin-top:6px;opacity:0.9;font-size:13px;font-weight:600}
 
 /* Dairy-free toggle */
-.df-toggle{display:flex;align-items:center;justify-content:space-between;background:white;border-radius:20px;padding:14px 20px;margin-bottom:16px;box-shadow:var(--shadow)}
+.df-toggle{display:flex;align-items:center;justify-content:space-between;background:var(--card-bg);border-radius:20px;padding:14px 20px;margin-bottom:16px;box-shadow:var(--shadow)}
 .df-toggle-left{display:flex;align-items:center;gap:10px}
 .df-toggle-left .icon{font-size:24px}
 .df-toggle-left .label{font-weight:700;font-size:15px;color:var(--text)}
@@ -137,7 +171,7 @@ body::after{content:'';position:fixed;bottom:-80px;left:-40px;width:300px;height
 .switch{position:relative;width:52px;height:30px;flex-shrink:0}
 .switch input{opacity:0;width:0;height:0}
 .switch .slider{position:absolute;inset:0;background:#D4D4D4;border-radius:30px;cursor:pointer;transition:all .25s}
-.switch .slider::before{content:'';position:absolute;left:3px;top:3px;width:24px;height:24px;background:white;border-radius:50%;transition:all .25s;box-shadow:0 1px 4px rgba(0,0,0,0.15)}
+.switch .slider::before{content:'';position:absolute;left:3px;top:3px;width:24px;height:24px;background:var(--card-bg);border-radius:50%;transition:all .25s;box-shadow:0 1px 4px rgba(0,0,0,0.15)}
 .switch input:checked+.slider{background:var(--green)}
 .switch input:checked+.slider::before{transform:translateX(22px)}
 
@@ -145,7 +179,7 @@ body::after{content:'';position:fixed;bottom:-80px;left:-40px;width:300px;height
 .df-swap{color:var(--green);font-size:12px;font-weight:600;font-style:italic}
 
 /* Recipe link card */
-.link-card{display:flex;align-items:center;gap:14px;padding:16px 18px;background:white;border:2.5px solid var(--blue);border-radius:20px;cursor:pointer;text-align:left;transition:transform .15s,box-shadow .15s;box-shadow:var(--shadow);width:100%;font-family:'Baloo 2',sans-serif;margin-bottom:14px}
+.link-card{display:flex;align-items:center;gap:14px;padding:16px 18px;background:var(--card-bg);border:2.5px solid var(--blue);border-radius:20px;cursor:pointer;text-align:left;transition:transform .15s,box-shadow .15s;box-shadow:var(--shadow);width:100%;font-family:'Baloo 2',sans-serif;margin-bottom:14px}
 .link-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(17,138,178,0.15)}
 .link-card .link-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;background:linear-gradient(135deg,#E1F5FE,#81D4FA)}
 .link-card .link-text{flex:1}
@@ -154,11 +188,11 @@ body::after{content:'';position:fixed;bottom:-80px;left:-40px;width:300px;height
 .link-card .link-arrow{font-size:20px;color:var(--blue);flex-shrink:0}
 
 /* Step-by-step cards */
-.step-card{background:white;border-radius:24px;padding:20px 24px;margin-bottom:12px;box-shadow:var(--shadow);border-left:5px solid var(--blue)}
+.step-card{background:var(--card-bg);border-radius:24px;padding:20px 24px;margin-bottom:12px;box-shadow:var(--shadow);border-left:5px solid var(--blue)}
 
 /* Recipe info bar */
 .info-bar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
-.info-pill{display:flex;align-items:center;gap:6px;background:white;border-radius:14px;padding:10px 16px;box-shadow:var(--shadow);flex:1 1 auto;min-width:120px}
+.info-pill{display:flex;align-items:center;gap:6px;background:var(--card-bg);border-radius:14px;padding:10px 16px;box-shadow:var(--shadow);flex:1 1 auto;min-width:120px}
 .info-pill .info-icon{font-size:18px}
 .info-pill .info-text{font-size:12px;font-weight:500;color:var(--text-light);line-height:1.3}
 .info-pill .info-value{font-size:14px;font-weight:700;color:var(--text)}
@@ -387,11 +421,14 @@ const R=[
 
 const CATS=[{n:"Breads",icon:"\u{1F35E}",c:"breads"},{n:"Special",icon:"\u2728",c:"special"},{n:"Dough",icon:"\u{1FAD3}",c:"dough"},{n:"Sweet & More",icon:"\u{1F370}",c:"sweet"},{n:"Explore",icon:"\u{1F50D}",c:"explore"}];
 
-let S={v:"home",r:null,sz:null,cl:null,cat:null,df:false};
+let S={v:"home",r:null,sz:null,cl:null,cat:null,df:false,dark:false};
 
-// Persist dairy-free preference
+// Persist preferences
 try{S.df=localStorage.getItem("fb_df")==="1"}catch(e){}
+try{S.dark=localStorage.getItem("fb_dark")==="1"}catch(e){}
+if(S.dark)document.body.classList.add("dark");
 function toggleDF(){S.df=!S.df;try{localStorage.setItem("fb_df",S.df?"1":"0")}catch(e){};render()}
+function toggleDark(){S.dark=!S.dark;document.body.classList.toggle("dark",S.dark);try{localStorage.setItem("fb_dark",S.dark?"1":"0")}catch(e){};render()}
 
 // Dairy-free ingredient swaps
 const DF_SWAPS={
@@ -430,7 +467,7 @@ function renderHome(){
 
   const cards=arr=>arr.map(r=>`<button class="recipe-card" data-cat="${getCat(r)}" onclick="selR('${r.id}')"><div class="recipe-icon-box">${r.icon}</div><div style="flex:1;min-width:0"><div class="recipe-card-title">${r.name}</div><div class="recipe-card-desc">${r.desc}</div></div><div class="recipe-card-badge">#${r.fn}</div></button>`).join('');
 
-  return`<header class="header"><div class="header-icon">\u{1F35E}</div><h1>Fresh Bake</h1><p class="subtitle">Our Family Breadmaker Guide</p></header><div class="rainbow"></div>
+  return`<header class="header"><button class="dark-btn" onclick="toggleDark()">${S.dark?'\u{1F319}':'\u{2600}\uFE0F'}</button><div class="header-icon">\u{1F35E}</div><h1>Fresh Bake</h1><p class="subtitle">Our Family Breadmaker Guide</p></header><div class="rainbow"></div>
   <div class="df-toggle"><div class="df-toggle-left"><span class="icon">\u{1F95B}</span><div><div class="label">Dairy-Free Mode${S.df?' <span class="df-badge">ON</span>':''}</div><div class="sub">${S.df?'Swapping milk, butter & cheese for dairy-free':'Tap to swap dairy ingredients automatically'}</div></div></div><label class="switch"><input type="checkbox" ${S.df?'checked':''} onchange="toggleDF()"><span class="slider"></span></label></div>
   <div class="tabs"><button class="tab ${!S.cat?'active':''}" data-c="all" onclick="ss({cat:null})">All</button>${CATS.map(c=>`<button class="tab ${S.cat===c.c?'active':''}" data-c="${c.c}" onclick="ss({cat:S.cat==='${c.c}'?null:'${c.c}'})">${c.icon} ${c.n}</button>`).join('')}</div>
   <div class="recipe-list view-enter">
@@ -449,13 +486,13 @@ function renderRecipe(){
   if(S.sz)st+=` \u2192 <strong>LOAF</strong> = <strong>${S.sz}</strong>`;
   if(S.cl)st+=` \u2192 <strong>COLOUR</strong> = <strong>${S.cl}</strong>`;
   st+=` \u2192 <strong>START/STOP</strong> \u{1F44D}`;
-  const heroBg=cc==='orange'?'#FFF3E0,#FFE0B2':cc==='purple'?'#F3E5F5,#CE93D8':cc==='green'?'#E0F2F1,#80CBC4':cc==='blue'?'#E1F5FE,#81D4FA':'#FCE4EC,#F48FB1';
+  const heroBg=S.dark?(cc==='orange'?'#3D3520,#4A4028':cc==='purple'?'#2D2040,#3A2850':cc==='green'?'#1A302E,#253D3A':cc==='blue'?'#1A2A3D,#25354A':'#3D2030,#4A2838'):(cc==='orange'?'#FFF3E0,#FFE0B2':cc==='purple'?'#F3E5F5,#CE93D8':cc==='green'?'#E0F2F1,#80CBC4':cc==='blue'?'#E1F5FE,#81D4FA':'#FCE4EC,#F48FB1');
 
   // Build linked recipe cards
   let links='';
   if(r.links){r.links.forEach(l=>{links+=linkCard(l.id,l.label)})}
 
-  return`<header class="header compact"><button class="back-btn" onclick="goHome()">\u2190</button></header><div class="view-enter">
+  return`<header class="header compact"><button class="back-btn" onclick="goHome()">\u2190</button><button class="dark-btn" onclick="toggleDark()">${S.dark?'\u{1F319}':'\u{2600}\uFE0F'}</button></header><div class="view-enter">
   <div class="df-toggle" style="margin-top:8px"><div class="df-toggle-left"><span class="icon">\u{1F95B}</span><div><div class="label">Dairy-Free${S.df?' <span class="df-badge">ON</span>':''}</div><div class="sub">${S.df?'Showing dairy-free swaps':'Tap to swap dairy'}</div></div></div><label class="switch"><input type="checkbox" ${S.df?'checked':''} onchange="toggleDF()"><span class="slider"></span></label></div>
   <div class="recipe-hero"><div class="recipe-hero-icon" style="background:linear-gradient(135deg,${heroBg})">${r.icon}</div><h2>${r.name}</h2><p>${r.desc}</p>${r.inspired?'<div class="inspired-tag">\u{1F50D} Inspired by BBC Good Food</div>':''}</div>
   <div class="settings-card ${cc}"><div class="settings-label">\u2699\uFE0F Machine Settings</div><div class="settings-grid"><div class="settings-item"><div class="label">Programme</div><div class="value">${fnL}</div></div>${S.cl?`<div class="settings-item"><div class="label">Colour</div><div class="value">${S.cl}</div></div>`:''}${S.sz?`<div class="settings-item"><div class="label">Size</div><div class="value">${S.sz}</div></div>`:''}</div><div class="settings-steps">${st}</div></div>
